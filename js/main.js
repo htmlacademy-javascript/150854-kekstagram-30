@@ -1,4 +1,8 @@
-const textMessages = [
+const IMAGES_LIMIT = 25;
+const AVATAR_LIMIT = 6;
+const LIKES = {min: 15, max: 200};
+const COMMENT_LIMIT = 20;
+const COMMENT_TEXTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -6,36 +10,10 @@ const textMessages = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-const names = ['Артём','Андрей', 'Алексей', 'Анна', 'Алина', 'Анастасия', 'Борис', 'Глеб'];
-const description = ['Передо мной фотография на тему «Летний отдых»', 'На этом снимке я  вижу  детей, которые отдыхают в летнем лагере.', 'Все ребята  находятся на берегу моря.', 'Дети одеты  в лёгкую  спортивную форму.', 'Дети увлечены игрой на пляже , поэтому их лица радостные и счастливые.', 'Красивый зимний сад', 'Берег реки Вятка', 'Охота на муравьёв', 'Бесконечность', 'Свидетели Иегова'];
+const DISCRIPTIONS_IMAGE = ['Передо мной фотография на тему «Летний отдых»', 'На этом снимке я  вижу  детей, которые отдыхают в летнем лагере.', 'Все ребята  находятся на берегу моря.', 'Дети одеты  в лёгкую  спортивную форму.', 'Дети увлечены игрой на пляже , поэтому их лица радостные и счастливые.', 'Красивый зимний сад', 'Берег реки Вятка', 'Охота на муравьёв', 'Бесконечность', 'Свидетели Иегова'];
+const NAMES = ['Артём','Андрей', 'Алексей', 'Анна', 'Алина', 'Анастасия', 'Борис', 'Глеб'];
 
-
-const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
-const generateImageId = getUniqueValueInRange(1, 25);
-const generateUrlInt = getUniqueValueInRange(1, 25);
-const generateLikesInt = getUniqueValueInRange(15, 200);
-const generateCommentId = getUniqueValueInRange(1, 1000000);
-const createComment = function () {
-  return {
-    id: generateCommentId(),
-    avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
-    message: getRandomArrayElement(textMessages),
-    name: getRandomArrayElement(names),
-  };
-};
-const generateComments = Array.from({length: getRandomInt(0, 30)}, createComment);
-const createImageDescription = function () {
-  return {
-    id: generateImageId(),
-    url: `photos/${generateUrlInt()}.jpg`,
-    description: getRandomArrayElement(description),
-    likes: generateLikesInt(),
-    comments: generateComments
-
-  };
-};
-const generateImageDescription = Array.from({length: 25}, createImageDescription);
-
+// получаем случайное число в диапазоне
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -43,20 +21,55 @@ function getRandomInt(min, max) {
 }
 
 
-function getUniqueValueInRange (min, max) {
-  const previousValues = [];
+// Получение случайного элемента массива
+const getRandomArrayElement = (arr) => arr[getRandomInt(0, arr.length - 1)];
 
-  return function () {
-    let currentValue = getRandomInt(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInt(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
+// Генервтор уникальных значений
+const createIdGenerator = () =>{
+  let lastGeneratedId = 0;
+  return () => {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
   };
-}
+};
 
-//console.log(generateImageDescription);
+
+const generateCommentId = createIdGenerator();
+
+
+const createMessage = () => Array.from(
+  {length: getRandomInt(1, 2)},
+  () => getRandomArrayElement(COMMENT_TEXTS),
+).join(' ');
+
+
+const createComment = function () {
+  return {
+    id: generateCommentId(),
+    avatar: `img/avatar-${getRandomInt(1, AVATAR_LIMIT)}.svg`,
+    message: createMessage(),
+    name: getRandomArrayElement(NAMES),
+  };
+};
+
+
+const generateImageId = createIdGenerator();
+
+
+const createImage = (index) => ({
+  id: generateImageId(),
+  url: `photos/${index}.jpg`,
+  description: getRandomArrayElement(DISCRIPTIONS_IMAGE),
+  likes: getRandomInt(LIKES.min, LIKES.max),
+  comments: Array.from({length: getRandomInt(0, COMMENT_LIMIT)}, createComment,
+  ),
+});
+
+
+const getImages = () => Array.from(
+  {length: IMAGES_LIMIT},
+  (_, imageIndex) => createImage(imageIndex + 1)
+);
+
+
+getImages();
