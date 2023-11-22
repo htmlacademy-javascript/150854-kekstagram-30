@@ -1,21 +1,16 @@
-// получаем случайное число в диапазоне
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const REMOVE_MESSAGE_TIMEOUT = 5000;
+const errorMessageTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 
 
-// Получение случайного элемента массива
-const getRandomArrayElement = (arr) => arr[getRandomInt(0, arr.length - 1)];
+const showMessageError = () => {
+  const errorElement = errorMessageTemplate.cloneNode(true);
+  document.body.append(errorElement);
 
-// Генервтор уникальных значений
-const createIdGenerator = () =>{
-  let lastGeneratedId = 0;
-  return () => {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
+  setTimeout(() => {
+    errorElement.remove();
+  }, REMOVE_MESSAGE_TIMEOUT);
 };
 
-export {getRandomInt, getRandomArrayElement, createIdGenerator};
+
+export {showMessageError};
+
