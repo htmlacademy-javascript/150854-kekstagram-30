@@ -1,8 +1,8 @@
-//import {getImages} from './data.js';
 import { renderGallery } from './gallery.js';
 import {initUploadPhoto} from './form.js';
 import {loadPictures} from './api.js';
 import { showMessageError } from './utils.js';
+import { initFilter } from './filters.js';
 
 const bootstrap = async () => {
   try{
@@ -10,6 +10,7 @@ const bootstrap = async () => {
 
     renderGallery(pictures);
     initUploadPhoto();
+    initFilter(pictures);
   } catch(error) {
     showMessageError();
   }
