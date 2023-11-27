@@ -9,12 +9,12 @@ const bootstrap = async () => {
     const pictures = await loadPictures();
 
     renderGallery(pictures);
-    initUploadPhoto();
     initFilter(pictures);
   } catch(error) {
     showMessageError();
   }
 };
 
+initUploadPhoto();
 
 bootstrap();
