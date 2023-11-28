@@ -1,10 +1,11 @@
-import { renderGallery } from './gallery.js';
+import { renderThumbnails } from './thumbnail.js';
 import { debounce } from './utils.js';
+
 const MAX_FILTER_RANDOM = 10;
 
 const filtersElement = document.querySelector('.img-filters');
 const filterForm = filtersElement.querySelector('.img-filters__form');
-
+const picturesContainer = document.querySelector('.pictures');
 const filterButtons = filterForm.querySelectorAll('button');
 
 const FiltersEnum = {
@@ -20,15 +21,15 @@ const getRandomIndex = (min, max) => Math.floor(Math.random() * (max - min));
 const filterHandlers = {
   [FiltersEnum.DEFAULT]:  (data) => data,
   [FiltersEnum.RANDOM]:  (data) => {
-    const randomIndexList = [];
+    const randomItems = [];
     const max = Math.min(MAX_FILTER_RANDOM, data.length);
-    while(randomIndexList.length < max) {
+    while(randomItems.length < max) {
       const index = getRandomIndex(0, data.length);
-      if(!randomIndexList.includes(index)){
-        randomIndexList.push(index);
+      if(!randomItems.includes(index)){
+        randomItems.push(index);
       }
     }
-    return randomIndexList.map((index) => data[index]);
+    return randomItems.map((index) => data[index]);
 
   },
   [FiltersEnum.DISCUSSED]:  (data) =>[...data].sort((item1, item2) => item2.comments.length - item1.comments.length),
@@ -39,7 +40,7 @@ const repaint = (filter, data) => {
   const filteredData = filterHandlers[filter](data);
   const pictures = document.querySelectorAll('.picture');
   pictures.forEach((item) => item.remove());
-  renderGallery(filteredData);
+  renderThumbnails(filteredData, picturesContainer);
 };
 
 
