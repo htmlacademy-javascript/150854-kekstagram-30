@@ -4,9 +4,9 @@ import { debounce } from './utils.js';
 const MAX_FILTER_RANDOM = 10;
 
 const filtersElement = document.querySelector('.img-filters');
-const filterForm = filtersElement.querySelector('.img-filters__form');
-const picturesContainer = document.querySelector('.pictures');
-const filterButtons = filterForm.querySelectorAll('button');
+const filterFormElement = filtersElement.querySelector('.img-filters__form');
+const picturesContainerElement = document.querySelector('.pictures');
+const filterButtonElements = filterFormElement.querySelectorAll('button');
 
 const FiltersEnum = {
   DEFAULT: 'filter-default',
@@ -40,7 +40,7 @@ const repaint = (filter, data) => {
   const filteredData = filterHandlers[filter](data);
   const pictures = document.querySelectorAll('.picture');
   pictures.forEach((item) => item.remove());
-  renderThumbnails(filteredData, picturesContainer);
+  renderThumbnails(filteredData, picturesContainerElement);
 };
 
 
@@ -50,9 +50,9 @@ const debouncedRepaint = debounce(repaint);
 const initFilter = (data) => {
   filtersElement.classList.remove('img-filters--inactive');
 
-  filterButtons.forEach((button) => {
+  filterButtonElements.forEach((button) => {
     button.addEventListener('click', (evt) => {
-      const currentActiveElement = filterForm.querySelector('.img-filters__button--active');
+      const currentActiveElement = filterFormElement.querySelector('.img-filters__button--active');
       currentActiveElement.classList.remove('img-filters__button--active');
       evt.target.classList.add('img-filters__button--active');
       debouncedRepaint(evt.target.id, data);
