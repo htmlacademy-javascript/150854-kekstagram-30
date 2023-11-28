@@ -2,10 +2,10 @@ import { renderThumbnails } from './thumbnail.js';
 import { showPicture } from './picture.js';
 
 
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerElement = document.querySelector('.pictures');
 
 const renderGallery = (pictures) => {
-  picturesContainer.addEventListener('click', (evt) =>{
+  picturesContainerElement.addEventListener('click', (evt) =>{
     const thumbnail = evt.target.closest('[data-thumbnail-id]');
 
     if(!thumbnail){
@@ -19,7 +19,7 @@ const renderGallery = (pictures) => {
     showPicture(pictureData);
   });
 
-  renderThumbnails(pictures, picturesContainer);
+  renderThumbnails(pictures, picturesContainerElement);
 
 };
 
