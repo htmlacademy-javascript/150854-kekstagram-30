@@ -6,7 +6,7 @@ import { showErrorMessage, showSuccessMessage } from './message.js';
 
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const ERROR_TEXT = {
+const ErrorText = {
   INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштеги должны быть уникальными',
   INVALID_PATTERN: 'Неправильный хэштег'
@@ -140,7 +140,7 @@ const onFormSubmit = (evt) => {
 pristine.addValidator(
   hashtagField,
   hasValidCount,
-  ERROR_TEXT.INVALID_COUNT,
+  ErrorText.INVALID_COUNT,
   3,
   true
 );
@@ -148,7 +148,7 @@ pristine.addValidator(
 pristine.addValidator(
   hashtagField,
   hasUniqueTags,
-  ERROR_TEXT.NOT_UNIQUE,
+  ErrorText.NOT_UNIQUE,
   2,
   true
 );
@@ -156,7 +156,7 @@ pristine.addValidator(
 pristine.addValidator(
   hashtagField,
   hasValidTags,
-  ERROR_TEXT.INVALID_PATTERN,
+  ErrorText.INVALID_PATTERN,
   1,
   true
 );
